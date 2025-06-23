@@ -1,18 +1,19 @@
-import { db } from '@db'
-import { Storage } from '@lib/enums/Storage'
-import { Logger } from '@lib/state/Logger'
-import { mmkvStorage } from '@lib/storage/MMKV'
-import { AppDirectory, readableFileSize } from '@lib/utils/File'
-import { initLlama } from 'cui-llama.rn'
-import { model_data, ModelDataType } from 'db/schema'
-import { eq } from 'drizzle-orm'
-import { getDocumentAsync } from 'expo-document-picker'
-import { copyAsync, deleteAsync, getInfoAsync, readDirectoryAsync } from 'expo-file-system'
-import { create } from 'zustand'
-import { createJSONStorage, persist } from 'zustand/middleware'
+import { db } from '@db';
+import { Storage } from '@lib/enums/Storage';
+import { Logger } from '@lib/state/Logger';
+import { mmkvStorage } from '@lib/storage/MMKV';
+import { AppDirectory, readableFileSize } from '@lib/utils/File';
+import { initLlama } from 'cui-llama.rn';
+import { model_data, ModelDataType } from 'db/schema';
+import { eq } from 'drizzle-orm';
+import { getDocumentAsync } from 'expo-document-picker';
+import { copyAsync, deleteAsync, getInfoAsync, readDirectoryAsync } from 'expo-file-system';
+import { Platform } from 'react-native'; // Moved before zustand
 
-import { GGMLNameMap, GGMLType } from './GGML'
-import { Platform } from 'react-native'
+import { create } from 'zustand'; // Empty line before
+import { createJSONStorage, persist } from 'zustand/middleware';
+
+import { GGMLNameMap, GGMLType } from './GGML';
 
 export type ModelData = Omit<ModelDataType, 'id' | 'create_date' | 'last_modified'>
 
