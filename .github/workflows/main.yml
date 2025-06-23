@@ -1,62 +1,64 @@
-name: Build ChatterUI Android APK
-
+name: Build Android APK
 on:
   push:
-    branches: [ main ] # Trigger on pushes to the main branch
-  workflow_dispatch: # Allows manual triggering from the GitHub Actions tab
-
+    branches: [main]
+  pull_request:
+    branches: [main]
 jobs:
-  build_android:
-    runs-on: ubuntu-latest # Use a fresh Ubuntu virtual machine
-
+  lint-and-typecheck:
+    runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4 # Action to clone your repository
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
-          node-version: '20' # Or whatever Node.js version your project uses
-
+          node-version: '20'
       - name: Install dependencies
-        run: npm install # Install your project's npm dependencies
+        run: npm ci
+      - name: Run ESLint
+        run: npm run lint
+      - name: Run Prettier check
+        run: npm run format-check
+      - name: Run TypeScript check
+        run: npm run type-check
 
-      # --- Expo EAS Specific Steps ---
-      # This is the most crucial part for an Expo project
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+      - name: Install dependencies
+        run: npm ci
+      - name: Run Unit Tests
+        run: npm test
+
+  build:
+    needs: [lint-and-typecheck, test]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+      - uses: actions/setup-java@v3
+        with:
+          distribution: 'adopt'
+          java-version: '11'
+      - name: Install dependencies
+        run: npm ci
+      - name: Check Expo CLI
+        run: npx expo --version
       - name: Install EAS CLI
         run: npm install -g eas-cli
-
-      - name: Login to Expo (using a secret token)
-        # You'll need to create an EXPO_TOKEN in your GitHub repository secrets
-        # (Settings > Secrets and variables > Actions > New repository secret)
-        # Get your token from `expo access-token:create` or your Expo account settings
-        run: eas login --token ${{ secrets.EXPO_TOKEN }}
-
-      - name: Build Android App with EAS
-        # This triggers a cloud build with Expo Application Services
-        run: eas build --platform android --profile production # Or 'development' if for dev build
-
-      - name: Download APK from EAS Build
-        # After the build, EAS will provide a link to the APK.
-        # You might need to parse the output of 'eas build' or
-        # use a more sophisticated action to download the artifact.
-        # A common way is to upload it as a GitHub artifact.
-        run: |
-          # Example: You'd typically get the build URL from the previous step's output
-          # or use a tool to download it. For simplicity, let's assume
-          # eas build command outputs a direct download link.
-          # This part might require more specific Expo/EAS CLI commands or actions.
-          # For typical use, you'd likely configure EAS to upload to a specific service
-          # or use GitHub's upload-artifact.
-          echo "EAS build will produce your APK. Check the EAS dashboard or build logs for download."
-        # Alternatively, if EAS provides a direct download or you want to upload
-        # the resulting build to GitHub Actions artifacts:
-      - name: Upload APK artifact (if EAS outputs it to a local path on the runner)
-        uses: actions/upload-artifact@v4
+      - name: Login to Expo
+        run: eas login --non-interactive --token ${{ secrets.EXPO_TOKEN }}
+      - name: Build APK
+        run: eas build --platform android --profile production --non-interactive
+      - name: Check APK output
+        run: ls -la dist || echo "ERROR:dist directory not found"
+      - name: Upload APK
+        uses: actions/upload-artifact@v3
         with:
-          name: ChatterUI-APK
-          path: path/to/your/app.apk # Replace with the actual path EAS build outputs the APK to
-                                    # (often within the project's output directory after a local build)
-                                    # For cloud builds, you usually download from EAS dashboard/API.
-                                    # For this specific project, `eas build --platform android` is a cloud build.
-                                    # You might need to fetch the artifact from EAS after it's done.
+          name: android-apk
+          path: dist/*.apk
