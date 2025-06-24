@@ -33,6 +33,8 @@
     "app/CharacterEditor.tsx",
     "app/ColorTest.tsx",
     "app/ComponentTest.tsx",
-    "app/Embedding.tsx"
+    "app/Embedding.tsx",
+    "app/Logs.tsx",
+    "app/SamplerMenu.tsx"
   ]
 }
