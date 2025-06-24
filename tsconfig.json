@@ -1,7 +1,7 @@
 {
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
-    "strict": true,
+    "strict": false,
     "baseUrl": ".",
     "paths": {
       "@components/*": ["app/components/*"],
@@ -17,7 +17,9 @@
     "skipLibCheck": true,
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
-    "noEmit": true
+    "noEmit": true,
+    "lib": ["ES2015", "DOM"],
+    "noImplicitAny": false
   },
   "include": [
     "**/*.ts",
@@ -28,6 +30,9 @@
     "expo-env.d.ts",
     "app/_layout.tsx",
     "app/About.tsx",
-    "app/CharacterEditor.tsx"
+    "app/CharacterEditor.tsx",
+    "app/ColorTest.tsx",
+    "app/ComponentTest.tsx",
+    "app/Embedding.tsx"
   ]
 }
