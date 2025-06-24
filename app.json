@@ -1,0 +1,12 @@
+{
+  "expo": {
+    "name": "ChatterUI",
+    "slug": "chatterui",
+    "version": "0.8.5",
+    "platforms": ["android"],
+    "android": {
+      "package": "com.lexameta.chatterui",
+      "versionCode": 1
+    }
+  }
+}
