@@ -21,6 +21,9 @@ jobs:
         run: npm run format-check
       - name: Run TypeScript check
         run: npm run type-check
+      - name: Install Jest globally
+        run: npm install -g jest
+        if: steps.test.outputs.status == 'failure'
   test:
     runs-on: ubuntu-latest
     steps:
@@ -55,7 +58,7 @@ jobs:
       - name: Build APK
         run: eas build --platform android --profile production --non-interactive
       - name: Check APK output
-        run: ls -la dist || echo "ERROR: dist directory not found"
+        run: ls -la dist || echo "ERROR:dist directory not found"
       - name: Upload APK
         uses: actions/upload-artifact@v3
         with:
