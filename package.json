@@ -1,6 +1,6 @@
 {
   "name": "chatterui",
-  "main": "expo-router/entry",
+  "main": "expo-router/main",
   "version": "0.8.5",
   "scripts": {
     "start": "expo start",
@@ -12,12 +12,12 @@
     "lint": "eslint . --fix",
     "format-check": "prettier --check .",
     "type-check": "tsc --noEmit",
-    "prebuild": "cross-env APP_VARIANT=development expo prebuild --clean",
+    "prebuild": "cross-env APP_VARIANT=development expo prebuild",
     "dev:android": "cross-env APP_VARIANT=development expo run:android",
     "dev:ios": "cross-env APP_VARIANT=development expo run:ios",
-    "migrate": "npx drizzle-kit generate",
+    "migrate": "npx drizzle-kit migrate",
     "patchsql": "npx patch-package expo-sqlite --exclude \"\\.project|\\.cxx|build|bin\" --case-sensitive-path-filtering",
-    "patchfetch": "npx patch-package expo --include '\".*fetch\\.ts$|.*NativeResponse\\.kt$\"'"
+    "patchfetch": "npx patch-package expo --include \"fetch.*\\.ts$|NativeResponse\\.kt$\""
   },
   "jest": {
     "preset": "jest-expo",
@@ -86,8 +86,10 @@
   "devDependencies": {
     "@babel/core": "^7.24.7",
     "@types/base-64": "^1.0.2",
+    "@types/node": "^20.12.7",
     "@types/react": "~18.3.12",
     "@types/react-native": "^0.73.0",
+    "@types/react-navigation": "^3.4.0",
     "babel-preset-expo": "^12.0.1",
     "cross-env": "^7.0.3",
     "drizzle-kit": "^0.30.4",
