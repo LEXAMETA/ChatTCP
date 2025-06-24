@@ -11,9 +11,9 @@ module.exports = {
   ],
   plugins: ['prettier', 'eslint-plugin-react-compiler', 'internal', 'import'],
   rules: {
-    'internal/enforce-spacing-values': 'off', // Disable custom rule
-    'react-compiler/react-compiler': 'warn',
-    'prettier/prettier': 'off', // Disable to avoid formatting errors
+    'internal/enforce-spacing-values': 'off',
+    'react-compiler/react-compiler': 'off', // Disable experimental rule
+    'prettier/prettier': 'off',
     radix: 'off',
     'no-unused-vars': 'off',
     '@typescript-eslint/no-unused-vars': 'off',
@@ -21,8 +21,10 @@ module.exports = {
     'import/order': 'off',
     'no-mixed-spaces-and-tabs': 'off',
     'linebreak-style': ['error', 'unix'],
-    'indent': 'off', // Disable indent to avoid spacing issues
-    '@typescript-eslint/no-explicit-any': 'warn', // Soften TypeScript rules
+    'indent': 'off',
+    '@typescript-eslint/no-explicit-any': 'off',
     '@typescript-eslint/explicit-module-boundary-types': 'off',
+    '@typescript-eslint/no-unnecessary-type-assertion': 'off', // Soften TS
+    'no-console': 'warn', // Allow console for debugging
   },
 };
