@@ -7,9 +7,9 @@
     "android": "expo run:android",
     "ios": "expo run:ios",
     "web": "expo start --web",
-    "test": "jest --passWithNoTests --verbose", // Add verbose for logs
+    "test": "jest --passWithNoTests --verbose",
     "postinstall": "patch-package",
-    "lint": "eslint . --fix --max-warnings=0", // Enforce no warnings
+    "lint": "eslint . --fix --max-warnings=0",
     "format-check": "prettier --check .",
     "type-check": "tsc --noEmit",
     "prebuild": "cross-env APP_VARIANT=development expo prebuild --clean",
