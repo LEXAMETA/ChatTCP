@@ -25,7 +25,7 @@ jobs:
         run: npm run type-check > tsc.log 2>&1 || echo "TypeScript failed:$(cat tsc.log)"
         continue-on-error: true
       - name: Upload logs
-        uses: actions/upload-artifact@v4 # Updated to v4
+        uses: actions/upload-artifact@v4
         with:
           name: lint-logs
           path: |
@@ -47,7 +47,7 @@ jobs:
         run: npm test > jest.log 2>&1 || echo "Jest failed:$(cat jest.log)"
         continue-on-error: true
       - name: Upload logs
-        uses: actions/upload-artifact@v4 # Updated to v4
+        uses: actions/upload-artifact@v4
         with:
           name: test-logs
           path: jest.log
@@ -72,11 +72,16 @@ jobs:
       - name: Login to Expo
         run: eas login --non-interactive --token ${{ secrets.EXPO_TOKEN }}
       - name: Build APK
-        run: eas build --platform android --profile production --non-interactive
+        run: eas build --platform android --profile production --non-interactive --verbose > eas-build.log 2>&1 || echo "EAS build failed: $(cat eas-build.log)"
       - name: Check APK output
         run: ls -la dist || echo "ERROR:dist directory not found"
+      - name: Upload build logs
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-logs
+          path: eas-build.log
       - name: Upload APK
-        uses: actions/upload-artifact@v4 # Updated to v4
+        uses: actions/upload-artifact@v4
         with:
           name: android-apk
           path: dist/*.apk
