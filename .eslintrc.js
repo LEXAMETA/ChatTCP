@@ -11,21 +11,16 @@ module.exports = {
   ],
   plugins: ['prettier', 'eslint-plugin-react-compiler', 'internal', 'import'],
   rules: {
-    'internal/enforce-spacing-values': 'warn', // Soften to warn
+    'internal/enforce-spacing-values': 'warn',
     'react-compiler/react-compiler': 'warn',
-    'prettier/prettier': [
-      'error',
-      {},
-      {
-        usePrettierrc: true,
-      },
-    ],
+    'prettier/prettier': ['warn', {}, { usePrettierrc: true }],
     radix: 'off',
     'no-unused-vars': 'off',
     '@typescript-eslint/no-unused-vars': 'off',
-    'object-shorthand': 'off', // Disable shorthand checks
-    'import/order': 'off', // Disable import order checks
-    'no-mixed-spaces-and-tabs': 'off', // Avoid formatting issues
-    'linebreak-style': ['error', 'unix'], // Enforce LF line endings
+    'object-shorthand': 'off',
+    'import/order': 'off',
+    'no-mixed-spaces-and-tabs': 'off',
+    'linebreak-style': ['error', 'unix'], // Enforce LF
+    'indent': ['error', 2], // Enforce 2-space indent
   },
 };
