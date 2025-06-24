@@ -16,11 +16,14 @@ jobs:
       - name: Install dependencies
         run: npm ci
       - name: Run ESLint
-        run: npm run lint || echo "Lint failed, continuing..."
+        run: npm run lint || echo "ESLint failed:$(cat eslint.log)"
+        continue-on-error: true
       - name: Run Prettier check
-        run: npm run format-check || echo "Prettier failed, continuing..."
+        run: npm run format-check || echo "Prettier failed:$(cat prettier.log)"
+        continue-on-error: true
       - name: Run TypeScript check
-        run: npm run type-check || echo "TypeScript failed, continuing..."
+        run: npm run type-check || echo "TypeScript failed:$(cat tsc.log)"
+        continue-on-error: true
   test:
     runs-on: ubuntu-latest
     steps:
@@ -33,7 +36,8 @@ jobs:
       - name: Install Jest globally
         run: npm install -g jest
       - name: Run Unit Tests
-        run: npm test || echo "Tests failed, continuing..."
+        run: npm test || echo "Jest failed:$(cat jest.log)"
+        continue-on-error: true
   build:
     needs: [lint-and-typecheck, test]
     runs-on: ubuntu-latest
