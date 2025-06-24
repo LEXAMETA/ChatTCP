@@ -14,7 +14,10 @@
     "allowJs": true,
     "jsx": "react-native",
     "esModuleInterop": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "noEmit": true
   },
   "include": [
     "**/*.ts",
@@ -24,6 +27,7 @@
     ".expo/types/**/*.ts",
     "expo-env.d.ts",
     "app/_layout.tsx",
-    "app/About.tsx"
+    "app/About.tsx",
+    "app/CharacterEditor.tsx"
   ]
 }
