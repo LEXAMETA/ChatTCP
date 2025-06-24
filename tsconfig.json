@@ -19,7 +19,18 @@
     "allowSyntheticDefaultImports": true,
     "noEmit": true,
     "lib": ["ES2015", "DOM"],
-    "noImplicitAny": false
+    "noImplicitAny": false,
+    "types": [
+      "react",
+      "react-native",
+      "node",
+      "jest",
+      "expo",
+      "expo-vector-icons",
+      "react-navigation",
+      "react-native-mmkv",
+      "zustand"
+    ]
   },
   "include": [
     "**/*.ts",
@@ -35,6 +46,7 @@
     "app/ComponentTest.tsx",
     "app/Embedding.tsx",
     "app/Logs.tsx",
-    "app/SamplerMenu.tsx"
+    "app/SamplerMenu.tsx",
+    "node_modules/drizzle-orm/**/*.d.ts"
   ]
 }
