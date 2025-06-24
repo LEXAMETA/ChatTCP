@@ -13,17 +13,14 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: '18'
+          cache: 'npm'
       - name: Install dependencies
-        run: |
-          rm -rf node_modules package-lock.json
-          npm install --legacy-peer-deps
-      - name: Install ESLint and Jest
-        run: npm install -g eslint@8.56.0 jest@29.7.0
+        run: npm ci --legacy-peer-deps
       - name: Run ESLint
-        run: eslint . --fix > eslint.log 2>&1 || echo "ESLint failed:$(cat eslint.log)"
+        run: npm run lint > eslint.log 2>&1 || echo "ESLint failed:$(cat eslint.log)"
         continue-on-error: true
       - name: Run TypeScript check
-        run: tsc --noEmit > tsc.log 2>&1 || echo "TypeScript failed:$(cat tsc.log)"
+        run: npm run type-check > tsc.log 2>&1 || echo "TypeScript failed:$(cat tsc.log)"
         continue-on-error: true
       - name: Upload logs
         uses: actions/upload-artifact@v4
@@ -39,14 +36,11 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: '18'
+          cache: 'npm'
       - name: Install dependencies
-        run: |
-          rm -rf node_modules package-lock.json
-          npm install --legacy-peer-deps
-      - name: Install Jest globally
-        run: npm install -g jest@29.7.0
+        run: npm ci --legacy-peer-deps
       - name: Run Unit Tests
-        run: jest --config jest.config.js --passWithNoTests --verbose --forceExit > jest.log 2>&1 || echo "Jest failed:$(cat jest.log)"
+        run: npm test > jest.log 2>&1 || echo "Jest failed:$(cat jest.log)"
         continue-on-error: true
       - name: Upload logs
         uses: actions/upload-artifact@v4
@@ -61,6 +55,7 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: '18'
+          cache: 'npm'
       - uses: actions/setup-java@v3
         with:
           distribution: 'adopt'
@@ -71,15 +66,13 @@ jobs:
           sudo apt-get install -y android-sdk
           echo "ANDROID_SDK_ROOT=/usr/lib/android-sdk" >> $GITHUB_ENV
       - name: Install dependencies
-        run: |
-          rm -rf node_modules package-lock.json
-          npm install --legacy-peer-deps
+        run: npm ci --legacy-peer-deps
       - name: Install EAS CLI
         run: npm install -g eas-cli@14.5.0
       - name: Login to Expo
         run: eas login --non-interactive --token ${{ secrets.EXPO_TOKEN }}
       - name: Build APK
-        run: eas build --platform android --profile production --non-interactive --verbose > eas-build.log 2>&1 || echo "EAS build failed:$(cat eas-build.log)"
+        run: eas build --platform android --profile production --non-interactive --verbose > eas-build.log 2>&1
       - name: Check APK output
         run: ls -la dist || echo "ERROR:dist directory not found"
       - name: Upload build logs
