@@ -7,7 +7,7 @@
     "android": "expo run:android",
     "ios": "expo run:ios",
     "web": "expo start --web",
-    "test": "jest --passWithNoTests", // Changed from --watchAll
+    "test": "jest --passWithNoTests",
     "postinstall": "patch-package",
     "lint": "eslint . --fix",
     "format-check": "prettier --check .",
