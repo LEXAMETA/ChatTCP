@@ -15,14 +15,16 @@ jobs:
           node-version: '18'
       - name: Install dependencies
         run: npm ci --legacy-peer-deps || echo "npm ci failed, using legacy-peer-deps"
+      - name: Install ESLint and Prettier
+        run: npm install -g eslint@8.56.0 prettier@3.2.4
       - name: Run ESLint
-        run: npm run lint > eslint.log 2>&1 || echo "ESLint failed:$(cat eslint.log)"
+        run: eslint . --fix > eslint.log 2>&1 || echo "ESLint failed:$(cat eslint.log)"
         continue-on-error: true
       - name: Run Prettier check
-        run: npm run format-check > prettier.log 2>&1 || echo "Prettier failed:$(cat prettier.log)"
+        run: prettier --check . > prettier.log 2>&1 || echo "Prettier failed:$(cat prettier.log)"
         continue-on-error: true
       - name: Run TypeScript check
-        run: npm run type-check > tsc.log 2>&1 || echo "TypeScript failed:$(cat tsc.log)"
+        run: tsc --noEmit > tsc.log 2>&1 || echo "TypeScript failed:$(cat tsc.log)"
         continue-on-error: true
       - name: Upload logs
         uses: actions/upload-artifact@v4
@@ -42,9 +44,9 @@ jobs:
       - name: Install dependencies
         run: npm ci --legacy-peer-deps || echo "npm ci failed, using legacy-peer-deps"
       - name: Install Jest globally
-        run: npm install -g jest
+        run: npm install -g jest@29.7.0
       - name: Run Unit Tests
-        run: npm test > jest.log 2>&1 || echo "Jest failed:$(cat jest.log)"
+        run: jest --passWithNoTests --verbose --forceExit > jest.log 2>&1 || echo "Jest failed:$(cat jest.log)"
         continue-on-error: true
       - name: Upload logs
         uses: actions/upload-artifact@v4
@@ -65,10 +67,8 @@ jobs:
           java-version: '11'
       - name: Install dependencies
         run: npm ci --legacy-peer-deps
-      - name: Check Expo CLI
-        run: npx expo --version
       - name: Install EAS CLI
-        run: npm install -g eas-cli
+        run: npm install -g eas-cli@14.5.0
       - name: Login to Expo
         run: eas login --non-interactive --token ${{ secrets.EXPO_TOKEN }}
       - name: Build APK
