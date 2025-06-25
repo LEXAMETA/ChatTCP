@@ -29,3 +29,4 @@ index 4691b00..f017adf 100644
    private fun addUpdateHook(database: NativeDatabase) {
      database.ref.enableUpdateHook { databaseName, tableName, operationType, rowID ->
        if (!hasListeners) {
+       
