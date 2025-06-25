@@ -29,7 +29,12 @@
       "expo-vector-icons",
       "react-navigation",
       "react-native-mmkv",
-      "zustand"
+      "zustand",
+      "expo-router",
+      "expo-file-system",
+      "expo-clipboard",
+      "react-native-collapsible",
+      "react-native-reanimated"
     ]
   },
   "include": [
@@ -49,4 +54,4 @@
     "app/SamplerMenu.tsx",
     "node_modules/drizzle-orm/**/*.d.ts"
   ]
-}
+    }
