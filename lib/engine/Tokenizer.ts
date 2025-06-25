@@ -1,25 +1,24 @@
-import { useAppModeState } from '@lib/state/AppMode';
-import { Logger } from '@lib/state/Logger';
-import { initLlama, LlamaContext } from 'cui-llama.rn';
+import { useAppModeState } from '@lib/state/AppMode'
+import { Logger } from '@lib/state/Logger'
+import { initLlama, LlamaContext } from 'cui-llama.rn'
 import {
-  copyAsync,
-  deleteAsync,
-  documentDirectory,
-  getInfoAsync,
-  makeDirectoryAsync,
-} from 'expo-file-system';
-import { Asset } from 'expo-asset'; // Moved after expo-file-system
+    copyAsync,
+    deleteAsync,
+    documentDirectory,
+    getInfoAsync,
+    makeDirectoryAsync,
+} from 'expo-file-system'
+import { create } from 'zustand'
 
-import { create } from 'zustand'; // Empty line before
-
-import { Llama } from './Local/LlamaLocal';
+import { Llama } from './Local/LlamaLocal'
+import { Asset } from 'expo-asset'
 
 type TokenizerState = {
-  model?: LlamaContext;
-  tokenize: (text: string) => number[];
-  getTokenCount: (text: string) => number;
-  loadModel: () => Promise<void>;
-};
+    model?: LlamaContext
+    tokenize: (text: string) => number[]
+    getTokenCount: (text: string) => number
+    loadModel: () => Promise<void>
+}
 
 export namespace Tokenizer {
     export const useDefaultTokenizer = create<TokenizerState>()((set, get) => ({
@@ -77,4 +76,3 @@ export namespace Tokenizer {
 }
 
 Tokenizer.useDefaultTokenizer.getState().loadModel()
-
