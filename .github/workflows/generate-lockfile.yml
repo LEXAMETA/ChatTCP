@@ -17,7 +17,7 @@ jobs:
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
           git add package-lock.json
-          git commit -m "Add package-lock.json"
+          git commit -m "Regenerate package-lock.json"
           git push
       - name: Upload npm log
         if: failure()
