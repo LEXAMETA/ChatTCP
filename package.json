@@ -8,7 +8,6 @@
     "ios": "expo run:ios",
     "web": "expo start --web",
     "test": "jest --config jest.config.js --passWithNoTests --verbose --forceExit",
-    "postinstall": "patch-package",
     "lint": "eslint . --fix",
     "format": "prettier --write .",
     "format-check": "prettier --check .",
@@ -16,9 +15,7 @@
     "prebuild": "cross-env APP_VARIANT=development expo prebuild --clean",
     "dev:android": "cross-env APP_VARIANT=development expo run:android",
     "dev:ios": "cross-env APP_VARIANT=development expo run:ios",
-    "migrate": "npx drizzle-kit generate",
-    "patchsql": "npx patch-package expo-sqlite --exclude \"\\.project|\\.cxx|build|bin\" --case-sensitive-path-filtering",
-    "patchfetch": "npx patch-package expo --include '\".*fetch\\.ts$|.*NativeResponse\\.kt$\"'"
+    "migrate": "npx drizzle-kit generate"
   },
   "dependencies": {
     "@babel/traverse": "^7.24.1",
@@ -76,7 +73,6 @@
   "devDependencies": {
     "@babel/core": "^7.24.7",
     "@types/react": "~18.3.12",
-    "@types/react-native": "^0.73.0",
     "babel-preset-expo": "^12.0.1",
     "cross-env": "^7.0.3",
     "drizzle-kit": "^0.30.4",
@@ -88,7 +84,6 @@
     "jest": "^29.7.0",
     "jest-expo": "^52.0.0",
     "@testing-library/react-native": "12.7.2",
-    "patch-package": "^8.0.0",
     "prettier": "^3.2.4",
     "typescript": "~5.3.3"
   },
