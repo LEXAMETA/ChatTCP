@@ -1,3 +1,4 @@
+import journal from './meta/_journal.json';
 import m0000 from './0000_sudden_blockbuster.sql';
 import m0001 from './0001_yellow_squirrel_girl.sql';
 import m0002 from './0002_majestic_brother_voodoo.sql';
@@ -9,20 +10,10 @@ import m0007 from './0007_loving_magik.sql';
 import m0008 from './0008_fine_sleeper.sql';
 import m0009 from './0009_huge_young_avengers.sql';
 
-import journal from './meta/_journal.json'; // Moved after SQL imports
-
 export default {
-  journal: journal,
+  journal,
   migrations: {
-    m0000: m0000,
-    m0001: m0001,
-    m0002: m0002,
-    m0003: m0003,
-    m0004: m0004,
-    m0005: m0005,
-    m0006: m0006,
-    m0007: m0007,
-    m0008: m0008,
-    m0009: m0009,
-  },
+    m0000, m0001, m0002, m0003, m0004,
+    m0005, m0006, m0007, m0008, m0009
+  }
 };
