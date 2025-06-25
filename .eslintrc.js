@@ -1,11 +1,9 @@
 module.exports = {
   extends: ['universe/native', 'plugin:prettier/recommended'],
-  plugins: ['@typescript-eslint'],
+  plugins: ['@typescript-eslint', 'internal'],
   parser: '@typescript-eslint/parser',
   parserOptions: {
-    ecmaFeatures: {
-      jsx: true
-    },
+    ecmaFeatures: { jsx: true },
     ecmaVersion: 2021,
     sourceType: 'module'
   },
@@ -22,8 +20,6 @@ module.exports = {
     jest: true
   },
   settings: {
-    react: {
-      version: 'detect'
-    }
+    react: { version: 'detect' }
   }
 };
