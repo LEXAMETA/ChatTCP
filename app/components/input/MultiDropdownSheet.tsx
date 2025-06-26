@@ -65,10 +65,10 @@ const MultiDropdownSheet = <T,>({
     const [searchFilter, setSearchFilter] = useState('')
 
     const items = data.filter((item) =>
-        labelExtractor(item)
-            ?.toLowerCase()
-            .includes(searchFilter.toLowerCase() ?? true)
-    )
+  labelExtractor(item)
+    ?.toLowerCase()
+    .includes((searchFilter || '').toLowerCase())
+);
     return (
         <View style={containerStyle}>
             <Modal
