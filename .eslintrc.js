@@ -12,6 +12,7 @@ module.exports = {
     'no-undef': 'off',
     'no-unused-vars': 'off',
     'react/react-in-jsx-scope': 'off',
+    'react-compiler/react-compiler': 'off', // Disable react-compiler rule
     'prettier/prettier': ['error', { endOfLine: 'auto' }]
   },
   env: {
