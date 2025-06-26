@@ -1,17 +1,16 @@
-import { db as database } from '@db'
-import { Tokenizer } from '@lib/engine/Tokenizer'
-import { replaceMacros } from '@lib/utils/Macros'
-import { convertToFormatInstruct } from '@lib/utils/TextFormat'
-import { chatEntries, chats, ChatSwipe, chatSwipes, CompletionTimings } from 'db/schema'
-import { and, count, desc, eq, getTableColumns, like } from 'drizzle-orm'
-import * as Notifications from 'expo-notifications'
-import { create } from 'zustand'
-import { useShallow } from 'zustand/react/shallow'
-
-import { Characters } from './Characters'
-import { Logger } from './Logger'
-import { AppSettings } from '../constants/GlobalValues'
-import { mmkv } from '../storage/MMKV'
+import { db as database } from '@db';
+import { Tokenizer } from '@lib/engine/Tokenizer';
+import { replaceMacros } from '@lib/utils/Macros';
+import { convertToFormatInstruct } from '@lib/utils/TextFormat';
+import { chatEntries, chats, ChatSwipe, chatSwipes, CompletionTimings } from 'db/schema';
+import { and, count, desc, eq, getTableColumns, like } from 'drizzle-orm';
+import * as Notifications from 'expo-notifications';
+import { create } from 'zustand';
+import { useShallow } from 'zustand/react/shallow';
+import { Characters } from './Characters';
+import { Logger } from './Logger';
+import { AppSettings } from '../constants/GlobalValues';
+import { mmkv } from '../storage/MMKV';
 
 export interface ChatSwipeState extends ChatSwipe {
     token_count?: number
@@ -335,36 +334,37 @@ export namespace Chats {
                 buffer: { ...state.buffer, data: state.buffer.data + data },
             })),
 
-        updateFromBuffer: async (cachedSwipeId) => {
-            const NO_VALID_ENTRY = -1
-            const index = get().data?.messages?.length
-            const buffer = get().buffer
-            const updatedSwipe: ChatSwipeUpdated = {
-                id: index ?? cachedSwipeId ?? NO_VALID_ENTRY,
-                swipe: buffer.data,
-            }
-            if (updatedSwipe.id === NO_VALID_ENTRY) {
-                Logger.error('Attempted to insert to buffer, but no valid entry was found!')
-                return
-            }
-            if (buffer.timings) updatedSwipe.timings = buffer.timings
-            if (!index) {
-                // this means there is no chat loaded, we need to update the db anyways
-                await db.mutate.updateChatSwipe(updatedSwipe)
-            } else
-                await get().updateEntry(index - 1, get().buffer.data, {
-                    updateFinished: true,
-                    verifySwipeId: cachedSwipeId,
-                    timings: buffer.timings,
-                })
-        },
+        
         insertLastToBuffer: () => {
             const message = get()?.data?.messages?.at(-1)
             if (!message) return
             const mes = message.swipes[message.swipe_id].swipe
 
             set((state: ChatState) => ({ ...state, buffer: { ...state.buffer, data: mes } }))
-        },
+   updateFromBuffer: async (cachedSwipeId) => {
+      const NO_VALID_ENTRY = -1;
+      const index = get().data?.messages?.length;
+      if (!index) {
+        Logger.error('Attempted to insert to buffer, but no chat loaded!');
+        return;
+      }
+      const buffer = get().buffer;
+      const updatedSwipe: ChatSwipeUpdated = {
+        id: cachedSwipeId ?? NO_VALID_ENTRY,
+        swipe: buffer.data,
+      };
+      if (updatedSwipe.id === NO_VALID_ENTRY) {
+        Logger.error('Attempted to insert to buffer, but no valid entry was found!');
+        return;
+      }
+      if (buffer.timings) updatedSwipe.timings = buffer.timings;
+      await database.mutate.updateChatSwipe(updatedSwipe);
+      await get().updateEntry(index - 1, buffer.data, {
+        updateFinished: true,
+        verifySwipeId: cachedSwipeId,
+        timings: buffer.timings,
+      });
+    },  
         setRegenCache: () => {
             const messages = get()?.data?.messages
             const message = messages?.[messages.length - 1]
