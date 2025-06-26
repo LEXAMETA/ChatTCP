@@ -5,7 +5,7 @@ module.exports = {
         name: IS_DEV ? 'LEXAmeta (DEV)' : 'ChatTCP',
         newArchEnabled: true,
         slug: 'lexameta',
-        version: '0.0.1',
+        version: '0.5.1',
         orientation: 'default',
         icon: './assets/images/icon.png',
         scheme: 'chattcp',
@@ -18,8 +18,8 @@ module.exports = {
                 tinted: './assets/images/icon.png',
             },
             supportsTablet: true,
-            package: IS_DEV ? 'com.Vali98.ChatterUIDev' : 'com.Vali98.ChatterUI',
-            bundleIdentifier: IS_DEV ? 'com.Vali98.ChatterUIDev' : 'com.Vali98.ChatterUI',
+            package: IS_DEV ? 'com.LEXAmeta.ChatTCPDev' : 'com.LEXAmeta.ChatTCP',
+            bundleIdentifier: IS_DEV ? 'com.LEXAmeta.ChatTCPDev' : 'com.LEXAmeta.ChatTCP',
         },
         android: {
             adaptiveIcon: {
@@ -29,7 +29,7 @@ module.exports = {
                 monochromeImage: './assets/images/adaptive-icon-foreground.png',
                 backgroundColor: '#000',
             },
-            package: IS_DEV ? 'com.Vali98.ChatterUIDev' : 'com.Vali98.ChatterUI',
+            package: IS_DEV ? 'com.LEXAmeta.ChatTCPDev' : 'com.LEXAmeta.ChatTCP',
             userInterfaceStyle: 'dark',
             permissions: [
                 'android.permission.FOREGROUND_SERVICE',
