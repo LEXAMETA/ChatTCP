@@ -27,11 +27,12 @@ type StringArrayEditorProps = {
     showSuggestionsOnEmpty?: boolean
 }
 
-const StringArrayEditor: React.FC<StringArrayEditorProps> = ({
-    containerStyle = undefined,
-    label = undefined,
-    value,
-    setValue,
+// app/components/input/StringArrayEditor.tsx
+const StringArrayEditor: React.FC<StringArrayEditorProps> = ({ value, setValue, label }) => {
+  const handleChange = (text: string) => {
+    const cleaned = text.replaceAll(',', ';'); // Ensure replaceAll is used on string
+    setValue(cleaned.split(';'));
+  };
     replaceNewLine = undefined,
     allowDuplicates = false,
     placeholder = 'Enter value...',
