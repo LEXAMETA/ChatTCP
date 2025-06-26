@@ -21,18 +21,17 @@ type StringArrayEditorProps = {
     allowDuplicates?: boolean
     placeholder?: string
     replaceNewLine?: string
-    allowBlank?: string
+    allowBlank?: boolean
     suggestions?: string[]
     filterOnly?: boolean
     showSuggestionsOnEmpty?: boolean
 }
 
-// app/components/input/StringArrayEditor.tsx
-const StringArrayEditor: React.FC<StringArrayEditorProps> = ({ value, setValue, label }) => {
-  const handleChange = (text: string) => {
-    const cleaned = text.replaceAll(',', ';'); // Ensure replaceAll is used on string
-    setValue(cleaned.split(';'));
-  };
+const StringArrayEditor: React.FC<StringArrayEditorProps> = ({
+    value,
+    setValue,
+    label,
+    containerStyle,
     replaceNewLine = undefined,
     allowDuplicates = false,
     placeholder = 'Enter value...',
@@ -44,19 +43,27 @@ const StringArrayEditor: React.FC<StringArrayEditorProps> = ({ value, setValue, 
     const { color, borderRadius } = Theme.useTheme()
     const styles = useStyles()
     const [newData, setNewData] = useState('')
+
     const filteredSuggestions = suggestions.filter(
         (item) => item.toLowerCase().includes(newData.toLowerCase()) && !value.includes(item)
     )
+
+    const handleChange = (text: string) => {
+        setNewData(text)
+        const cleaned = text.replaceAll(',', ';')
+        setValue(cleaned.split(';').map((item) => item.trim()).filter(Boolean))
+    }
+
     const handleSplice = (index: number) => {
         setValue(value.filter((item, index2) => index2 !== index))
     }
 
     const addData = (newData: string) => {
-        if (newData === '') {
+        if (!allowBlank && newData === '') {
             Logger.warnToast('Value cannot be empty')
             return
         }
-        if (value.includes(newData)) {
+        if (!allowDuplicates && value.includes(newData)) {
             Logger.warnToast('Value already exists')
             return
         }
@@ -73,10 +80,10 @@ const StringArrayEditor: React.FC<StringArrayEditorProps> = ({ value, setValue, 
                     <View style={styles.tagContainer}>
                         {value.map((item, index) => (
                             <TouchableOpacity
-                                key={index}
+                                key={item + index} // Ensure unique key
                                 style={styles.tag}
                                 onPress={() => handleSplice(index)}>
-                                <Text style={styles.tagText}>
+                                <Text style={styles.text}>
                                     {item.replaceAll('\n', replaceNewLine ?? '\n')}
                                 </Text>
                                 <AntDesign name="close" size={16} color={color.text._400} />
@@ -117,7 +124,7 @@ const StringArrayEditor: React.FC<StringArrayEditorProps> = ({ value, setValue, 
                                     onPress={() => addData(item)}
                                     variant="secondary"
                                     label={item}
-                                    key={index}
+                                    key={item + index}
                                 />
                             ))}
                         </ScrollView>
@@ -128,7 +135,7 @@ const StringArrayEditor: React.FC<StringArrayEditorProps> = ({ value, setValue, 
                     <TextInput
                         style={styles.input}
                         value={newData}
-                        onChangeText={setNewData}
+                        onChangeText={handleChange}
                         keyboardType="default"
                         multiline
                         placeholder={placeholder}
@@ -188,7 +195,7 @@ const useStyles = () => {
             alignItems: 'center',
         },
 
-        tagText: {
+        text: {
             color: color.text._100,
             marginRight: 8,
         },
