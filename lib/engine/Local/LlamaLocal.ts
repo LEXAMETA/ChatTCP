@@ -111,7 +111,7 @@ export namespace Llama {
                 return Logger.errorToast('Model Already Loaded!')
             }
 
-            if (checkGGMLDeprecated(parseInt(model.quantization))) {
+            if (checkGGMLDeprecated(parseInt(model.quantization, 10))) {
                 return Logger.errorToast('Quantization No Longer Supported!')
             }
 
