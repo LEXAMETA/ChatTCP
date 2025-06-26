@@ -167,7 +167,7 @@ export const fixSamplerConfig = (config: SamplerConfigData) => {
     let samekeys = true
     defaultKeys.map((key) => {
         if (key === SamplerID.SEED && typeof config[key] === 'string')
-            config[key] = parseInt(config[key])
+            config[key] = parseInt(config[key], 10) // Add radix 10
         if (existingKeys.includes(key)) return
         const data = Samplers[key].values.default
         config[key] = data
