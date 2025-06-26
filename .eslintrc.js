@@ -12,7 +12,8 @@ module.exports = {
     'no-undef': 'off',
     'no-unused-vars': 'off',
     'react/react-in-jsx-scope': 'off',
-    'react-compiler/react-compiler': 'off', // Disable react-compiler rule
+    'react-compiler/react-compiler': 'off', // Explicitly disable
+    'eslint-plugin-react-compiler/react-compiler': 'off', // Cover plugin namespace
     'prettier/prettier': ['error', { endOfLine: 'auto' }]
   },
   env: {
