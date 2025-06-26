@@ -5,7 +5,6 @@ on:
   pull_request:
     branches: [main]
   workflow_dispatch:
-
 jobs:
   lint-and-typecheck:
     runs-on: ubuntu-latest
@@ -16,10 +15,9 @@ jobs:
           node-version: '18'
           cache: 'npm'
       - name: Install dependencies
-        run: |
-          if [ -f package-lock.json ]; then npm ci --legacy-peer-deps; else npm install --legacy-peer-deps; fi
+        run: npm ci --legacy-peer-deps
       - name: Clear ESLint cache
-        run: npm run lint -- --clear-cache
+        run: rm -f .eslintcache
       - name: Run ESLint
         run: npm run lint > eslint.log 2>&1 || echo "ESLint failed:$(cat eslint.log)"
         continue-on-error: true
@@ -33,7 +31,6 @@ jobs:
           path: |
             eslint.log
             tsc.log
-
   test:
     runs-on: ubuntu-latest
     steps:
@@ -43,8 +40,7 @@ jobs:
           node-version: '18'
           cache: 'npm'
       - name: Install dependencies
-        run: |
-          if [ -f package-lock.json ]; then npm ci --legacy-peer-deps; else npm install --legacy-peer-deps; fi
+        run: npm ci --legacy-peer-deps
       - name: Run Unit Tests
         run: npm test > jest.log 2>&1 || echo "Jest failed:$(cat jest.log)"
         continue-on-error: true
@@ -53,14 +49,12 @@ jobs:
         with:
           name: test-logs
           path: jest.log
-
-  # This is the 'build' job, it must be at the same level as 'lint-and-typecheck' and 'test'
   build:
     needs: [lint-and-typecheck, test]
     runs-on: ubuntu-latest
     env:
       EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
-    steps: # <-- 'steps' key was missing here and indentation was off
+    steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
