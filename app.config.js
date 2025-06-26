@@ -24,7 +24,8 @@ module.exports = {
         android: {
             adaptiveIcon: {
                 foregroundImage: './assets/images/adaptive-icon-foreground.png',
-                backgroundImage: './assets/images//adaptive-icon-background.png',
+                // FIX: Removed the extra '/' here
+                backgroundImage: './assets/images/adaptive-icon-background.png',
                 monochromeImage: './assets/images/adaptive-icon-foreground.png',
                 backgroundColor: '#000',
             },
@@ -96,9 +97,8 @@ module.exports = {
                 origin: false,
             },
             eas: {
-                projectId:'0c7812a2-6d6b-405b-bf9e-b52226dae5bf',
+                projectId: '0c7812a2-6d6b-405b-bf9e-b52226dae5bf',
             },
         },
     },
 }
-
