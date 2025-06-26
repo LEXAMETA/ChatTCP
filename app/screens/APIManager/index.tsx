@@ -8,8 +8,7 @@ import { FlatList, Pressable, Text, View } from 'react-native'
 import APIValueItem from './APIValueItem'
 
 const APIManager = () => {
-    // eslint-disable-next-line react-compiler/react-compiler
-    'use no memo'
+    
     const { apiValues } = APIState.useAPIState((state) => ({
         apiValues: state.values,
     }))
