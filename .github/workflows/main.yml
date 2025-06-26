@@ -74,7 +74,7 @@ jobs:
       - name: Install EAS CLI
         run: npm install -g eas-cli@14.5.0
       - name: Verify EAS config
-        run: eas build:inspect --platform android --profile production
+        run: eas build:inspect --platform android --profile production --output dir --stage archive
       - name: Build APK
         run: eas build --platform android --profile production --non-interactive > eas-build.log 2>&1 || (cat eas-build.log && exit 1)
       - name: Check APK output
