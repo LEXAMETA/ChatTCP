@@ -73,8 +73,10 @@ jobs:
         run: npm ci --legacy-peer-deps
       - name: Install EAS CLI
         run: npm install -g eas-cli@14.5.0
+      - name: Verify EAS config
+        run: eas build:inspect --platform android --profile production
       - name: Build APK
-        run: eas build --platform android --profile production --non-interactive > eas-build.log 2>&1
+        run: eas build --platform android --profile production --non-interactive > eas-build.log 2>&1 || (cat eas-build.log && exit 1)
       - name: Check APK output
         run: ls -la dist || echo "ERROR:dist directory not found"
       - name: Upload build logs
