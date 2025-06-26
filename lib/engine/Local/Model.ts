@@ -195,7 +195,7 @@ export namespace Model {
     }
 
     const modelDataText = (data: ModelData) => {
-        const quantValue = parseInt(data.quantization) as GGMLType
+        const quantValue = parseInt(data.quantization, 10) as GGMLType;
         const quantType = GGMLNameMap[quantValue]
         return `Context length: ${data.context_length ?? 'N/A'}\nFile: ${data.file}\nName: ${data.name ?? 'N/A'}\nSize: ${(data.file_size && readableFileSize(data.file_size)) ?? 'N/A'}\nParams: ${data.params ?? 'N/A'}\nQuantization: ${quantType ?? 'N/A'}\nArchitecture: ${data.architecture ?? 'N/A'}`
     }
