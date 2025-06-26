@@ -14,6 +14,8 @@ jobs:
         with:
           node-version: '18'
           cache: 'npm'
+      - name: Clear npm cache
+        run: npm cache clean --force
       - name: Install dependencies
         run: npm install --legacy-peer-deps
       - name: Commit package-lock.json
