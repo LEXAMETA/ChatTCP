@@ -356,18 +356,51 @@ export namespace Characters {
         }
 
         export namespace mutate {
-            export const createCard = async (
-                name: string,
-                type: 'user' | 'character' = 'character'
-            ) => {
-                const { data } = createBlankV2Card(name)
+    export const createChat = async (charId: number) => {
+      const card = await query.card(charId);
+      if (!card) {
+        Logger.error('Character does not exist!');
+        return;
+      }
+      const userId = Characters.useUserCard.getState().id;
+      const charName = card.name;
+      return await database.transaction(async (tx) => {
+        if (!card || !charName) return;
+        const [{ chatId }, ..._] = await tx
+          .insert(chats)
+          .values({
+            character_id: charId,
+            user_id: userId ?? null,
+          })
+          .returning({ chatId: chats.id });
 
-                const [{ id }, ..._] = await database
-                    .insert(characters)
-                    .values({ ...data, type: type })
-                    .returning({ id: characters.id })
-                return id
-            }
+        if (!mmkv.getBoolean(AppSettings.CreateFirstMes)) return chatId;
+
+        const [{ entryId }, ...__] = await tx
+          .insert(chatEntries)
+          .values({
+            chat_id: chatId,
+            is_user: false,
+            name: card.name ?? '',
+            order: 0,
+          })
+          .returning({ entryId: chatEntries.id });
+
+        await tx.insert(chatSwipes).values({
+          entry_id: entryId,
+          swipe: convertToFormatInstruct(replaceMacros(card.first_mes ?? '')),
+        });
+
+        card?.alternate_greetings?.forEach(async (data) => {
+          await tx.insert(chatSwipes).values({
+            entry_id: entryId,
+            swipe: convertToFormatInstruct(replaceMacros(data.greeting)),
+          });
+        });
+        await updateModified(charId);
+        return chatId;
+      });
+    };
 
             export const updateCard = async (card: CharacterCardData, cardID: number) => {
                 if (!card) return
