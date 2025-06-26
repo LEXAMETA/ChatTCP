@@ -25,7 +25,7 @@ const selectorData = [
 const buttonVariants = ['primary', 'secondary', 'tertiary', 'critical', 'disabled']
 
 const ComponentTest = () => {
-    const [selected, setSelected] = useState<(typeof selectorData)[0]>(selectorData[0])
+    const [selected, setSelected] = useState<(typeof selectorData)[0]>(selectorData[0]);
     const [selectedM, setSelectedM] = useState<typeof selectorData>([])
     const [slider, setSlider] = useState<number>(0);
     const [data, setData] = useState<string[]>([])
