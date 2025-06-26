@@ -20,19 +20,7 @@
     "noEmit": true,
     "lib": ["ES2015", "DOM", "DOM.Iterable"],
     "noImplicitAny": false,
-    "types": [
-      "react",
-      "react-native",
-      "node",
-      "jest",
-      "expo",
-      "expo-vector-icons",
-      "react-navigation",
-      "zustand",
-      "expo-router",
-      "expo-file-system",
-      "react-native-reanimated"
-    ]
+    "types": ["react", "react-native", "node", "jest", "expo"]
   },
   "include": [
     "**/*.ts",
@@ -49,6 +37,6 @@
     "app/Embedding.tsx",
     "app/Logs.tsx",
     "app/SamplerMenu.tsx",
-    "node_modules/drizzle-orm/**/*.d.ts"
+    "app/screens/UserEditor/index.tsx"
   ]
 }
