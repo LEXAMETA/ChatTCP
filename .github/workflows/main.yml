@@ -51,12 +51,12 @@ jobs:
         with:
           name: test-logs
           path: jest.log
-  build:
-  needs: [lint-and-typecheck, test]
-  runs-on: ubuntu-latest
-  env:
-    EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
-  steps:
+        build:
+        needs: [lint-and-typecheck, test]
+        runs-on: ubuntu-latest
+        env:
+        EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+        steps:
     - uses: actions/checkout@v3
     - uses: actions/setup-node@v3
       with:
