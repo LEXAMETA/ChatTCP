@@ -18,7 +18,7 @@
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
     "noEmit": true,
-    "lib": ["ES2015", "DOM", "DOM.Iterable"],
+    "lib": ["ES2015", "ES2021", "ES2023", "DOM", "DOM.Iterable"],
     "noImplicitAny": false,
     "types": ["react", "react-native", "node", "jest", "expo"]
   },
