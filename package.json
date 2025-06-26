@@ -88,7 +88,7 @@
   "@testing-library/react-native": "12.7.2",
   "prettier": "^3.2.4",
   "typescript": "~5.3.3"
-}
+},
   "overrides": {
     "react-refresh": "~0.14.0"
   },
