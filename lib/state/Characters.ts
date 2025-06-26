@@ -651,25 +651,76 @@ export namespace Characters {
         await createCharacterFromV2JSON(card, uri)
     }
 
-    const createCharacterFromV1JSON = async (data: any, uri: string | undefined = undefined) => {
-        const result = characterCardV1Schema.safeParse(data)
-        if (result.error) {
-            Logger.errorToast('Invalid Character Card')
-            return
-        }
-        const converted = createBlankV2Card(result.data.name, result.data)
+    const createBlankV2Card = (
+  name: string,
+  options: {
+    description?: string
+    personality?: string
+    scenario?: string
+    first_mes?: string
+    mes_example?: string
+  } = {}
+): CharacterCardV2 => {
+  return {
+    spec: 'chara_card_v2',
+    spec_version: '2.0',
+    data: {
+      name: name,
+      description: options.description ?? '',
+      personality: options.personality ?? '',
+      scenario: options.scenario ?? '',
+      first_mes: options.first_mes ?? '',
+      mes_example: options.mes_example ?? '',
+      creator_notes: '',
+      system_prompt: '',
+      post_history_instructions: '',
+      alternate_greetings: [],
+      tags: [],
+      creator: '',
+      character_version: '',
+    },
+  }
+}
 
-        Logger.info(`Creating new character: ${result.data.name}`)
-        return db.mutate.createCharacter(converted, uri)
+const createCharacterFromV1JSON = async (data: any, uri: string | undefined = undefined) => {
+  const result = characterCardV1Schema.safeParse(data);
+  if (result.error) {
+    Logger.errorToast('Invalid Character Card');
+    return;
+  }
+  const converted = createBlankV2Card(result.data.name, result.data);
+  Logger.info(`Creating new character: ${result.data.name}`);
+  return db.mutate.createCard(converted.data, uri); // Adjusted to match schema
+}
+
+const createCharacterFromV2JSON = async (data: any, uri: string | undefined = undefined) => {
+  const result = characterCardV2Schema.safeParse(data);
+  if (result.error) {
+    Logger.warnToast('V2 Parsing failed, falling back to V1');
+    return await createCharacterFromV1JSON(data, uri);
+  }
+
+export const importCharacter = async () => {
+  const result = await DocumentPicker.getDocumentAsync({
+    copyToCacheDirectory: true,
+    type: ['image/*', 'application/json'],
+    multiple: true,
+  });
+  if (result.canceled) return;
+  result.assets.map(async (item) => {
+    const isPNG = item.mimeType?.includes('image/');
+    const isJSON = item.mimeType?.includes('application/json');
+    try {
+      if (isJSON) {
+        const data = await FS.readAsStringAsync(item.uri);
+        await createCharacterFromV2JSON(JSON.parse(data));
+      }
+      if (isPNG) await createCharacterFromImage(item.uri);
+    } catch (e) {
+      Logger.error(`Failed to create card from '${item.name}': ${e}`);
     }
-
-    const createCharacterFromV2JSON = async (data: any, uri: string | undefined = undefined) => {
-        // check JSON def
-        const result = characterCardV2Schema.safeParse(data)
-        if (result.error) {
-            Logger.warnToast('V2 Parsing failed, falling back to V1')
-            return await createCharacterFromV1JSON(data, uri)
-        }
+  });
+}
 
         Logger.info(`Creating new character: ${result.data.data.name}`)
         return await db.mutate.createCharacter(result.data, uri)
