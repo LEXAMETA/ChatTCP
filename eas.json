@@ -7,9 +7,8 @@
       "android": {
         "buildType": "apk"
       },
-      "projectId": "35170c5f-9416-4e03-a27c-4a2678513e40",
       "env": {
-        "ANDROID_SDK_ROOT": "/usr/local/lib/android/sdk"
+        "ANDROID_SDK_ROOT": "/usr/lib/android-sdk"
       }
     }
   }
