@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "ChatterUI",
-    "slug": "ChatterUI",
+    "slug": "lexameta",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
